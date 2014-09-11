@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Steam_ID 与 account_ID 互转</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="well">
+          <h1>Steam_ID 与 account_ID 互转</h1>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="input-group">
+          <input type="text" id="command-input" class="form-control" placeholder="请输入ID">
+          <span id="send-command" class="input-group-addon glyphicon glyphicon-ok"></span>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <ul id="message" class="list-group">
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/jquery-1.11.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/bignumber.min.js"></script>
+  <script>
+    // 按下指令发送按钮
+    $('#send-command').click(function(){
+      var content = new String($('#command-input').val());
+      if(BigNumber(content).gt('925388398'))
+      {
+        $('#message').prepend('<li class="list-group-item"><strong>' + content + ': ' + BigNumber(content).minus('76561197960265728'));
+      }
+      else
+      {
+        $('#message').prepend('<li class="list-group-item"><strong>' + content + ': ' + BigNumber(content).plus('76561197960265728'));
+      }
+      $('#command-input').val('');
+    });
+    
+    // 当命令输入框按下回车时，触发命令发送函数
+    $('#command-input').keydown(function(e){
+      if (13 == e.keyCode && $(this).val() != '') {
+        $('#send-command').click();
+      }
+    });
+  </script>
+</body>
+</html>
