@@ -17,7 +17,12 @@
       </div>
       <div class="col-md-12">
         <div class="input-group">
-          <input type="text" id="command-input" class="form-control" placeholder="请输入ID">
+          <input type="text" id="delim-input" class="form-control" placeholder="请输入分割符">
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="input-group">
+          <input type="text" id="id-input" class="form-control" placeholder="请输入ID">
           <span id="send-command" class="input-group-addon glyphicon glyphicon-ok"></span>
         </div>
       </div>
@@ -33,26 +38,49 @@
   <script src="js/bootstrap.min.js"></script>
   <script src="js/bignumber.min.js"></script>
   <script>
+
     // 按下指令发送按钮
     $('#send-command').click(function(){
-      var content = new String($('#command-input').val());
-      if(BigNumber(content).gt('925388398'))
-      {
-        $('#message').prepend('<li class="list-group-item"><strong>' + content + ': ' + BigNumber(content).minus('76561197960265728'));
+      var content = $('#id-input').val();
+      var delim = $('#delim-input').val();
+      var id = content.split(delim);
+      var idConverted = [];
+      var singleIdConverted;
+      if (delim != '') {
+        for (var i = 0; i < id.length; i++) {
+          idConverted[i] = Converter(id[i]);
+        }
+        $('#message').prepend('<li class="list-group-item">' + content + ': <strong>' + idConverted.join(delim) + '</strong></li>');
       }
-      else
-      {
-        $('#message').prepend('<li class="list-group-item"><strong>' + content + ': ' + BigNumber(content).plus('76561197960265728'));
+      else {
+        singleIdConverted = Converter(content);
+        $('#message').prepend('<li class="list-group-item">' + content + ': <strong>' + singleIdConverted + '</strong></li>');
       }
-      $('#command-input').val('');
+      
+      
     });
-    
+
     // 当命令输入框按下回车时，触发命令发送函数
-    $('#command-input').keydown(function(e){
+    $('#id-input').keydown(function(e){
       if (13 == e.keyCode && $(this).val() != '') {
         $('#send-command').click();
       }
     });
+
+    // 转换
+    function Converter(number) {
+      if(BigNumber(number).gt('925388398'))
+      {
+        //$('#message').prepend('<li class="list-group-item"><strong>' + number + ': ' + BigNumber(number).minus('76561197960265728'));
+        return BigNumber(number).minus('76561197960265728');
+      }
+      else
+      {
+        //$('#message').prepend('<li class="list-group-item"><strong>' + number + ': ' + BigNumber(number).plus('76561197960265728'));
+        return BigNumber(number).plus('76561197960265728');
+      }
+      //$('#id-input').val('');
+    }
   </script>
 </body>
 </html>
